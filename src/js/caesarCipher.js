@@ -67,6 +67,7 @@ function shift(letter, factor) {
 
   let index = alphabet[letter] + factor;
   if (index > 26) index = index - 26;
+  if (index - 1 < 0) index = 26 - index;
 
   return letters[index - 1];
 }
