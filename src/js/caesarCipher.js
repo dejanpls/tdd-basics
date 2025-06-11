@@ -1,41 +1,14 @@
 export default function caesarCipher(string, factor) {
   const shifted = string
     .split('')
-    .map((char) => shift(char, factor))
+    .map((char) => {
+      return isLetter(char) ? shift(char, factor) : char;
+    })
     .join('');
   return shifted;
 }
 
 function shift(letter, factor) {
-  const alphabet = {
-    a: 1,
-    b: 2,
-    c: 3,
-    d: 4,
-    e: 5,
-    f: 6,
-    g: 7,
-    h: 8,
-    i: 9,
-    j: 10,
-    k: 11,
-    l: 12,
-    m: 13,
-    n: 14,
-    o: 15,
-    p: 16,
-    q: 17,
-    r: 18,
-    s: 19,
-    t: 20,
-    u: 21,
-    v: 22,
-    w: 23,
-    x: 24,
-    y: 25,
-    z: 26,
-  };
-
   const letters = [
     'a',
     'b',
@@ -65,17 +38,17 @@ function shift(letter, factor) {
     'z',
   ];
 
-  let index = alphabet[letter] + factor;
-  if (index > 26) index = index - 26;
-  if (index - 1 < 0) index = 26 - index;
+  let index = getIndex(letters, letter, factor);
 
-  return letters[index - 1];
+  return letter.toUpperCase() === letter
+    ? letters[index].toUpperCase()
+    : letters[index];
 }
 
-// Don’t forget to test case preservation.
-// The shifted lettercase should follow the original lettercase.
-// For example, caesarCipher('HeLLo', 3) should return 'KhOOr'.
-// Don’t forget to test punctuation.
-// Punctuation, spaces, and other non-alphabetical characters should remain unchanged.
-// For example, caesarCipher('Hello, World!', 3)
-// should return 'Khoor, Zruog!'.
+function isLetter(char) {
+  return /^[a-zA-Z]$/.test(char);
+}
+
+function getIndex(letters, letter, factor) {
+  return (((letters.indexOf(letter.toLowerCase()) + factor) % 26) + 26) % 26;
+}
